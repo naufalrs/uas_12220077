@@ -2,7 +2,7 @@ import altair as alt
 import pandas as pd
 import streamlit as st
 import json
-
+st.set_page_config(page_title="UAS 2021",layout='wide')
 # Load Data
 f = open('kode_negara_lengkap.json')
 data = pd.read_csv('produksi_minyak_mentah.csv')
@@ -17,8 +17,21 @@ for item in obj :
     regionArr.append(item["region"])
     subRegionArr.append(item["sub-region"])
 
+# Cleaning
+found = False
+for i, row in data.iterrows():
+    found = False
+    for code in codeArr :
+        if row['kode_negara'] == code  :
+            found = True
+        if (found) :
+            break
+        
+    if (found == False) :
+        data.drop(index=i, inplace=True)
+
 # Header
-st.title("UAS FTTM 2021/2022")
+st.title("UAS IF 2112 Pemrograman Komputer 2021/2022")
 st.write('Aplikasi GUI yang mengambarkan informasi seputar data produksi minyak mentah dari berbagai negara di seluruh dunia.')
 
 # Util
@@ -120,7 +133,11 @@ def d1(year) :
     df1["nama"] = df1["kode_negara"].apply(searchCode)
     df1["region"] = df1["kode_negara"].apply(searchRegion)
     df1["sub-region"] = df1["kode_negara"].apply(searchSubRegion)
-    dfResult = df1[:1]
+    column_names = ["nama", "kode_negara", "region","sub-region","produksi"]
+    df1 = df1.reindex(columns=column_names)
+    df1.rename(columns={'nama': 'Nama', 'kode_negara': 'Kode Negara', 'region': 'Region', 'sub-region': 'Sub-Region', 'produksi': 'Produksi'}, inplace=True, errors='raise')
+    dfResult = df1.reset_index(inplace = False, drop = True)
+    dfResult = dfResult[:1]
     st.table(dfResult)
     
 def d12() :
@@ -131,7 +148,11 @@ def d12() :
     df["nama"] = df["kode_negara"].apply(searchCode)
     df["region"] = df["kode_negara"].apply(searchRegion)
     df["sub-region"] = df["kode_negara"].apply(searchSubRegion)
-    dfResult = df[:1]
+    column_names = ["nama", "kode_negara", "region","sub-region","produksi"]
+    df = df.reindex(columns=column_names)
+    df.rename(columns={'nama': 'Nama', 'kode_negara': 'Kode Negara', 'region': 'Region', 'sub-region': 'Sub-Region', 'produksi': 'Produksi'}, inplace=True, errors='raise')
+    dfResult = df.reset_index(inplace = False, drop = True)
+    dfResult = dfResult[:1]
     st.table(dfResult)
 
 def d2(year) :
@@ -142,7 +163,11 @@ def d2(year) :
     df1["nama"] = df1["kode_negara"].apply(searchCode)
     df1["region"] = df1["kode_negara"].apply(searchRegion)
     df1["sub-region"] = df1["kode_negara"].apply(searchSubRegion)
-    dfResult = df1[:1]
+    column_names = ["nama", "kode_negara", "region","sub-region","produksi"]
+    df1 = df1.reindex(columns=column_names)
+    df1.rename(columns={'nama': 'Nama', 'kode_negara': 'Kode Negara', 'region': 'Region', 'sub-region': 'Sub-Region', 'produksi': 'Produksi'}, inplace=True, errors='raise')
+    dfResult = df1.reset_index(inplace = False, drop = True)
+    dfResult = dfResult[:1]
     st.table(dfResult)
     
 def d22() :
@@ -154,7 +179,11 @@ def d22() :
     df["nama"] = df["kode_negara"].apply(searchCode)
     df["region"] = df["kode_negara"].apply(searchRegion)
     df["sub-region"] = df["kode_negara"].apply(searchSubRegion)
-    dfResult = df[:1]
+    column_names = ["nama", "kode_negara", "region","sub-region","produksi"]
+    df = df.reindex(columns=column_names)
+    df.rename(columns={'nama': 'Nama', 'kode_negara': 'Kode Negara', 'region': 'Region', 'sub-region': 'Sub-Region', 'produksi': 'Produksi'}, inplace=True, errors='raise')
+    dfResult = df.reset_index(inplace = False, drop = True)
+    dfResult = dfResult[:1]
     st.table(dfResult)
     
 
@@ -166,7 +195,10 @@ def d3(year) :
     df1["nama"] = df1["kode_negara"].apply(searchCode)
     df1["region"] = df1["kode_negara"].apply(searchRegion)
     df1["sub-region"] = df1["kode_negara"].apply(searchSubRegion)
-    dfResult = df1[:1]
+    column_names = ["nama", "kode_negara", "region","sub-region","produksi"]
+    df1 = df1.reindex(columns=column_names)
+    df1.rename(columns={'nama': 'Nama', 'kode_negara': 'Kode Negara', 'region': 'Region', 'sub-region': 'Sub-Region', 'produksi': 'Produksi'}, inplace=True, errors='raise')
+    dfResult = df1.reset_index(inplace = False, drop = True)
     st.table(dfResult)
 
 def d32() :    
@@ -178,7 +210,10 @@ def d32() :
     df["nama"] = df["kode_negara"].apply(searchCode)
     df["region"] = df["kode_negara"].apply(searchRegion)
     df["sub-region"] = df["kode_negara"].apply(searchSubRegion)
-    dfResult = df[:1]
+    column_names = ["nama", "kode_negara", "region","sub-region","produksi"]
+    df = df.reindex(columns=column_names)
+    df.rename(columns={'nama': 'Nama', 'kode_negara': 'Kode Negara', 'region': 'Region', 'sub-region': 'Sub-Region', 'produksi': 'Produksi'}, inplace=True, errors='raise')
+    dfResult = df.reset_index(inplace = False, drop = True)
     st.table(dfResult)
 
 # Layout Page
@@ -188,18 +223,20 @@ st.write("Tulis sebuah nama lengkap negara untuk menampilkan grafik")
 nama = st.text_input('Nama Negara', 'Australia', placeholder='Australia')
 if nama :
     a(nama)
+
 st.markdown("***")
 st.header("Fitur 2")
 st.subheader("Grafik yang menunjukan B-besar negara dengan jumlah produksi terbesar pada tahun T")
 st.write("Tulis sebuah tahun untuk menampilkan grafik")
 year =  st.slider("Tahun", step=1, max_value=2015,min_value=1971, key=1)
-st.write("Tulis sebuah angka N untuk menampilkan grafik N negara")
+st.write("Tulis sebuah angka N untuk menampilkan grafik N negara (max : 110)")
 idx = st.number_input('Angka', step=1, key=1, value=1)
 b(year,idx)
+
 st.markdown("***")
 st.header("Fitur 3")
 st.subheader("Grafik yang menunjukan B-besar negara dengan jumlah produksi terbesar secara kumulatif keseluruhan tahun")
-st.write("Tulis sebuah angka N untuk menampilkan grafik N negara")
+st.write("Tulis sebuah angka N untuk menampilkan grafik N negara (max : 137)")
 idx1 = st.number_input('Angka',step=1, key=2, value=1)
 c(idx1)
 
@@ -224,19 +261,3 @@ year =  st.slider("Tahun", step=1, max_value=2015,min_value=1971, key=4)
 d3(year)
 st.subheader("Negara dengan Jumlah Produksi 0 Keseluruhan Tahun")
 d32()
-
-
-
-
-
-
-
-
-
-
-
-
-
-# a("Australia")
-# b(2000,5)
-# c(5)
